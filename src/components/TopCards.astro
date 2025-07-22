@@ -1,0 +1,32 @@
+---
+// TopCards.astro
+import topCardsData from "../data/top-cards.json";
+
+const { setName } = Astro.props;
+
+// If no setName provided, show message or all sets (optional)
+if (!setName) {
+  throw new Error("Please provide a setName prop to TopCards component.");
+}
+
+const cards = topCardsData[setName] || [];
+---
+
+<section>
+  <h2>Top 10 Most Valuable Cards — {setName}</h2>
+
+  {
+    cards.length === 0 ? (
+      <p>No card data found for "{setName}".</p>
+    ) : (
+      <ol>
+        {cards.map((card) => (
+          <li>
+            <strong>{card.name}</strong> ({card.rarity} #{card.number}) – $
+            {card.price.toFixed(2)}
+          </li>
+        ))}
+      </ol>
+    )
+  }
+</section>

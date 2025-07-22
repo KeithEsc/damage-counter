@@ -1,0 +1,126 @@
+{
+  "Base Set": [
+    {
+      "name": "Charizard",
+      "number": "004/102",
+      "rarity": "Holo Rare",
+      "price": 453.54
+    },
+    {
+      "name": "Blastoise",
+      "number": "002/102",
+      "rarity": "Holo Rare",
+      "price": 156.48
+    },
+    {
+      "name": "Venusaur",
+      "number": "015/102",
+      "rarity": "Holo Rare",
+      "price": 116.26
+    },
+    {
+      "name": "Alakazam",
+      "number": "001/102",
+      "rarity": "Holo Rare",
+      "price": 55.07
+    },
+    {
+      "name": "Raichu",
+      "number": "014/102",
+      "rarity": "Holo Rare",
+      "price": 50.23
+    },
+    {
+      "name": "Zapdos",
+      "number": "016/102",
+      "rarity": "Holo Rare",
+      "price": 41.36
+    },
+    {
+      "name": "Mewtwo",
+      "number": "010/102",
+      "rarity": "Holo Rare",
+      "price": 40.59
+    },
+    {
+      "name": "Chansey",
+      "number": "003/102",
+      "rarity": "Holo Rare",
+      "price": 34.26
+    },
+    {
+      "name": "Gyarados",
+      "number": "006/102",
+      "rarity": "Holo Rare",
+      "price": 33.23
+    },
+    {
+      "name": "Clefairy",
+      "number": "005/102",
+      "rarity": "Holo Rare",
+      "price": 29.93
+    }
+  ],
+  "Jungle": [
+    {
+      "name": "Charizard",
+      "number": "004/130",
+      "rarity": "Holo Rare",
+      "price": 311.65
+    },
+    {
+      "name": "Blastoise",
+      "number": "002/130",
+      "rarity": "Holo Rare",
+      "price": 112.78
+    },
+    {
+      "name": "Venusaur",
+      "number": "018/130",
+      "rarity": "Holo Rare",
+      "price": 75.14
+    },
+    {
+      "name": "Mewtwo",
+      "number": "010/130",
+      "rarity": "Holo Rare",
+      "price": 41.72
+    },
+    {
+      "name": "Alakazam",
+      "number": "001/130",
+      "rarity": "Holo Rare",
+      "price": 34.64
+    },
+    {
+      "name": "Raichu",
+      "number": "016/130",
+      "rarity": "Holo Rare",
+      "price": 31.34
+    },
+    {
+      "name": "Gyarados",
+      "number": "007/130",
+      "rarity": "Holo Rare",
+      "price": 27.54
+    },
+    {
+      "name": "Pidgeot",
+      "number": "014/130",
+      "rarity": "Holo Rare",
+      "price": 27.48
+    },
+    {
+      "name": "Scyther",
+      "number": "017/130",
+      "rarity": "Holo Rare",
+      "price": 24.42
+    },
+    {
+      "name": "Nidoking",
+      "number": "011/130",
+      "rarity": "Holo Rare",
+      "price": 23.85
+    }
+  ]
+}

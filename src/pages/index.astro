@@ -1,0 +1,117 @@
+---
+import type { MarkdownInstance } from "astro";
+import "../styles/global.css";
+
+type Frontmatter = {
+  title: string;
+  description: string;
+  slug: string;
+  image?: string;
+  date: string; // or `Date` if you parse it beforehand
+  order?: number; // Optional order for sorting
+  icon?: string; // Optional icon for the set
+};
+
+const postImports = import.meta.glob<MarkdownInstance<Frontmatter>>(
+  "../content/*.mdx",
+  { eager: true }
+);
+const posts = Object.values(postImports).sort((a, b) => {
+  return (a.frontmatter.order ?? 9999) - (b.frontmatter.order ?? 9999);
+});
+
+const setBlocks = [
+  { name: "Base Set 2", slug: "base", icon: "/webp_symbols/Base Set 2.webp" },
+  { name: "Jungle", slug: "jungle", icon: "/webp_symbols/Jungle.webp" },
+  { name: "Fossil", slug: "fossil", icon: "/webp_symbols/Fossil.webp" },
+  {
+    name: "Team Rocket",
+    slug: "team-rocket",
+    icon: "/webp_symbols/Team Rocket.webp",
+  },
+  {
+    name: "Gym Heroes",
+    slug: "gym-heroes",
+    icon: "/webp_symbols/Gym Heroes.webp",
+  },
+  {
+    name: "Neo Genesis",
+    slug: "neo-genesis",
+    icon: "/webp_symbols/Neo Genesis.webp",
+  },
+  // ... add all desired sets
+];
+---
+
+<html lang="en">
+  <head>
+    <title>My Astro Blog</title>
+    <meta name="description" content="A blog built with Astro and Markdown." />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+
+  <body class="w-full bg-gray-100 p-4">
+    <header>
+      <nav class="max-w-[1200px] mx-auto">
+        <ul class="flex space-x-4 items-center place-content-between">
+          <img src="/logo_full.webp" alt="Logo" class="w-40 h-auto" />
+          <div class="links_container flex space-x-8">
+            <li><a href="/" class="text-blue-600 hover:underline">Home</a></li>
+            <li>
+              <a href="/about" class="text-blue-600 hover:underline">About</a>
+            </li>
+            <li>
+              <a href="/contact" class="text-blue-600 hover:underline"
+                >Contact</a
+              >
+            </li>
+          </div>
+          <div class="button_contai">
+            <button>Sign Up</button>
+          </div>
+        </ul>
+      </nav>
+    </header>
+    <main class="max-w-[1200px] mx-auto">
+      <section class="py-8 my-12">
+        <h1 class="text-3xl font-bold mx-auto my-[2rem] text-center">
+          Pokémon Card Sets by Series
+        </h1>
+        <p class="text-2xl font-bold mb-4 text-center mb-12">
+          Choose a series to learn about the Pokémon Trading Card Game sets <br
+          />and top cards from each expansion!
+        </p>
+      </section>
+      <h2 class="text-2xl font-bold mb-4">All Pokémon Sets</h2>
+      <div class="sets_wrapper">
+        <ul
+          class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-[1200px] mx-auto"
+        >
+          {
+            posts.map((post) => (
+              <li key={post.frontmatter.slug} class="mb-2">
+                <a
+                  href={`/sets/${post.frontmatter.slug}`}
+                  class="block p-2 rounded hover:bg-gray-100 transition"
+                >
+                  <span class="flex items-center gap-2 text-blue-700 font-medium">
+                    {post.frontmatter.icon && (
+                      <img
+                        src={post.frontmatter.icon}
+                        alt={`${post.frontmatter.title} icon`}
+                        class="w-8 h-8 object-contain"
+                        loading="lazy"
+                      />
+                    )}
+                    {post.frontmatter.title}
+                  </span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </main>
+  </body>
+</html>

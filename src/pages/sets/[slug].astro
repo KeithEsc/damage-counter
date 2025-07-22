@@ -1,0 +1,163 @@
+---
+import type { MarkdownInstance } from "astro";
+
+type Frontmatter = {
+  title: string;
+  description: string;
+  slug: string;
+  image?: string;
+  date: string;
+  author?: string;
+  tags?: string[];
+  canonical?: string;
+};
+
+export async function getStaticPaths() {
+  const allPosts = import.meta.glob<MarkdownInstance<Frontmatter>>(
+    "../../content/*.mdx"
+  );
+
+  const entries = Object.values(allPosts);
+  const resolved = await Promise.all(entries.map((entry) => entry()));
+
+  return resolved.map((post) => ({
+    params: { slug: post.frontmatter.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { frontmatter } = post;
+
+// Generate structured data for SEO
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: frontmatter.title,
+  description: frontmatter.description,
+  author: {
+    "@type": "Person",
+    name: frontmatter.author || "Your Name",
+  },
+  datePublished: frontmatter.date,
+  image: frontmatter.image ? `${Astro.site}${frontmatter.image}` : undefined,
+};
+---
+
+<html lang="en">
+  <head>
+    <!-- Basic SEO -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{frontmatter.title}</title>
+    <meta name="description" content={frontmatter.description} />
+    <link
+      rel="canonical"
+      href={frontmatter.canonical || `${Astro.site}/sets/${frontmatter.slug}`}
+    />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content={frontmatter.title} />
+    <meta property="og:description" content={frontmatter.description} />
+    <meta
+      property="og:url"
+      content={`${Astro.site}/sets/${frontmatter.slug}`}
+    />
+    {
+      frontmatter.image && (
+        <meta
+          property="og:image"
+          content={`${Astro.site}${frontmatter.image}`}
+        />
+      )
+    }
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content={frontmatter.title} />
+    <meta property="twitter:description" content={frontmatter.description} />
+    {
+      frontmatter.image && (
+        <meta
+          property="twitter:image"
+          content={`${Astro.site}${frontmatter.image}`}
+        />
+      )
+    }
+
+    <!-- Structured Data -->
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(structuredData)}
+    />
+
+    <!-- Additional meta tags -->
+    {
+      frontmatter.tags && (
+        <meta name="keywords" content={frontmatter.tags.join(", ")} />
+      )
+    }
+    <meta name="author" content={frontmatter.author || "Your Name"} />
+    <meta
+      name="publish_date"
+      property="og:publish_date"
+      content={frontmatter.date}
+    />
+  </head>
+  <body class="prose mx-auto p-4">
+    <!-- Breadcrumbs for SEO -->
+    <nav aria-label="Breadcrumb" class="mb-4 text-sm">
+      <ol class="flex space-x-2">
+        <li><a href="/" class="text-blue-600 hover:underline">Home</a></li>
+        <li class="before:content-['/'] before:mx-2">
+          <span class="text-gray-500">{frontmatter.title}</span>
+        </li>
+      </ol>
+    </nav>
+
+    <!-- Article header with semantic HTML -->
+    <article>
+      <header class="mb-8">
+        {
+          frontmatter.image && (
+            <img
+              src={frontmatter.image}
+              alt={`Featured image for ${frontmatter.title}`}
+              class="w-full h-64 object-cover rounded-lg mb-4"
+            />
+          )
+        }
+        <h1 class="text-4xl font-bold mb-4">{frontmatter.title}</h1>
+        <div class="flex items-center text-gray-600 text-sm space-x-4">
+          {frontmatter.author && <span>By {frontmatter.author}</span>}
+          <time datetime={frontmatter.date}>
+            {
+              new Date(frontmatter.date).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })
+            }
+          </time>
+        </div>
+        {
+          frontmatter.tags && (
+            <div class="mt-4">
+              {frontmatter.tags.map((tag) => (
+                <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          )
+        }
+      </header>
+
+      <!-- Main content -->
+      <div class="prose max-w-none">
+        <post.Content />
+      </div>
+    </article>
+  </body>
+</html>
